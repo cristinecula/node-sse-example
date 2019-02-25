@@ -36,6 +36,15 @@ app.get("/events/", function(req, res) {
 });
 
 setInterval(function() {
+  const date = +new Date();
+  console.log("Ping: " + Object.keys(clients) + " <- " + date);
+  for (clientId in clients) {
+    clients[clientId].write("event: ping\n");
+    clients[clientId].write(`data: {"time": ${date}}\n\n`);
+  }
+}, 1000);
+
+setInterval(function() {
   var msg = Math.random();
   console.log("Clients: " + Object.keys(clients) + " <- " + msg);
   for (clientId in clients) {
